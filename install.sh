@@ -13,20 +13,11 @@ echo "Downloading Installer..."
 
 set -- "XDG_CONFIG_HOME=$XDG_CONFIG_HOME"
 
-curl -sS https://github.com/vampbites/MeowcordInstaller/releases/latest/download/MeowcordInstallerCli-Linux \
+curl -sS https://github.com/vampbites/Meowlotl/releases/latest/download/MeowlotlCli-Linux \
   --output "$outfile" \
   --location
 
 chmod +x "$outfile"
-
-echo
-echo "Now running MeowcordInstaller"
-echo "Do you want to run as root? [Y|n]"
-echo "This is necessary if Discord is in a root owned location like /usr/share or /opt"
-printf "> "
-read -r runAsRoot
-
-opt="$(echo "$runAsRoot" | tr "[:upper:]" "[:lower:]")"
 
 if command -v sudo >/dev/null; then
   echo "Running with sudo"

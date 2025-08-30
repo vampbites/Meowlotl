@@ -1,9 +1,3 @@
-/*
- * SPDX-License-Identifier: GPL-3.0
- * Vencord Installer, a cross platform gui/cli app for installing Vencord
- * Copyright (c) 2023 Vendicated and Vencord contributors
- */
-
 package main
 
 import (
@@ -17,31 +11,37 @@ import (
 )
 
 var BaseDir string
-var FilesDir string
-var FilesDirErr error
-var Patcher string
+var BaseDirErr error
+var EnhancecordDirectory string
 
 func init() {
-	if dir := os.Getenv("MEOWCORD_USER_DATA_DIR"); dir != "" {
-		Log.Debug("Using MEOWCORD_USER_DATA_DIR")
+	if dir := os.Getenv("ENHANCECORD_USER_DATA_DIR"); dir != "" {
+		Log.Debug("Using ENHANCECORD_USER_DATA_DIR")
 		BaseDir = dir
 	} else if dir = os.Getenv("DISCORD_USER_DATA_DIR"); dir != "" {
-		Log.Debug("Using DISCORD_USER_DATA_DIR/../MeowcordData")
-		BaseDir = path.Join(dir, "..", "MeowcordData")
+		Log.Debug("Using DISCORD_USER_DATA_DIR/../EnhancecordData")
+		BaseDir = path.Join(dir, "..", "EnhancecordData")
 	} else {
 		Log.Debug("Using UserConfig")
-		BaseDir = appdir.New("Meowcord").UserConfig()
+		BaseDir = appdir.New("Enhancecord").UserConfig()
 	}
-	FilesDir = path.Join(BaseDir, "dist")
-	if !ExistsFile(FilesDir) {
-		FilesDirErr = os.MkdirAll(FilesDir, 0755)
-		if FilesDirErr != nil {
-			Log.Error("Failed to create", FilesDir, FilesDirErr)
-		} else {
-			FilesDirErr = FixOwnership(BaseDir)
+	dir := os.Getenv("ENHANCECORD_DIRECTORY")
+	if dir == "" {
+		if !ExistsFile(BaseDir) {
+			BaseDirErr = os.Mkdir(BaseDir, 0755)
+			if BaseDirErr != nil {
+				Log.Error("Failed to create", BaseDir, BaseDirErr)
+			} else {
+				BaseDirErr = FixOwnership(BaseDir)
+			}
 		}
 	}
-	Patcher = path.Join(FilesDir, "patcher.js")
+	if dir != "" {
+		Log.Debug("Using ENHANCECORD_DIRECTORY")
+		EnhancecordDirectory = dir
+	} else {
+		EnhancecordDirectory = path.Join(BaseDir, "enhancecord.asar")
+	}
 }
 
 type DiscordInstall struct {
@@ -93,7 +93,7 @@ func patchAppAsar(dir string, isSystemElectron bool) (err error) {
 	}
 
 	Log.Debug("Writing custom app.asar to", appAsar)
-	if err := WriteAppAsar(appAsar, Patcher); err != nil {
+	if err := WriteAppAsar(appAsar, EnhancecordDirectory); err != nil {
 		return err
 	}
 
@@ -143,14 +143,14 @@ func (di *DiscordInstall) patch() error {
 			}
 		}
 
-		Log.Debug("This is a flatpak. Trying to grant the Flatpak access to", FilesDir+"...")
+		Log.Debug("This is a flatpak. Trying to grant the Flatpak access to", EnhancecordDirectory+"...")
 
 		isSystemFlatpak := strings.HasPrefix(di.path, "/var")
 		var args []string
 		if !isSystemFlatpak {
 			args = append(args, "--user")
 		}
-		args = append(args, "override", name, "--filesystem="+FilesDir)
+		args = append(args, "override", name, "--filesystem="+EnhancecordDirectory)
 		fullCmd := "flatpak " + strings.Join(args, " ")
 
 		Log.Debug("Running", fullCmd)
@@ -171,7 +171,7 @@ func (di *DiscordInstall) patch() error {
 			err = cmd.Run()
 		}
 		if err != nil {
-			return errors.New("Failed to grant Discord Flatpak access to " + FilesDir + ": " + err.Error())
+			return errors.New("Failed to grant Discord Flatpak access to " + EnhancecordDirectory + ": " + err.Error())
 		}
 	}
 	return nil

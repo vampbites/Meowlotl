@@ -1,27 +1,22 @@
 //go:build cli
 
-/*
- * SPDX-License-Identifier: GPL-3.0
- * Vencord Installer, a cross platform gui/cli app for installing Vencord
- * Copyright (c) 2023 Vendicated and Vencord contributors
- */
-
 package main
 
 import (
 	"errors"
 	"flag"
 	"fmt"
-	"meowcordinstaller/buildinfo"
 	"os"
 	"runtime"
 	"strings"
+	"vencord/buildinfo"
 
 	"github.com/fatih/color"
 	"github.com/manifoldco/promptui"
 )
 
 var discords []any
+var interactive = false
 
 func isValidBranch(branch string) bool {
 	switch branch {
@@ -47,9 +42,9 @@ func main() {
 	var helpFlag = flag.Bool("help", false, "View usage instructions")
 	var versionFlag = flag.Bool("version", false, "View the program version")
 	var updateSelfFlag = flag.Bool("update-self", false, "Update me to the latest version")
-	var installFlag = flag.Bool("install", false, "Install Meowcord")
-	var updateFlag = flag.Bool("repair", false, "Repair Meowcord")
-	var uninstallFlag = flag.Bool("uninstall", false, "Uninstall Meowcord")
+	var installFlag = flag.Bool("install", false, "Install Enhancecord")
+	var updateFlag = flag.Bool("repair", false, "Repair Enhancecord")
+	var uninstallFlag = flag.Bool("uninstall", false, "Uninstall Enhancecord")
 	var installOpenAsarFlag = flag.Bool("install-openasar", false, "Install OpenAsar")
 	var uninstallOpenAsarFlag = flag.Bool("uninstall-openasar", false, "Uninstall OpenAsar")
 	var locationFlag = flag.String("location", "", "The location of the Discord install to modify")
@@ -62,8 +57,8 @@ func main() {
 	}
 
 	if *versionFlag {
-		fmt.Println("Meowcord Installer Cli", buildinfo.InstallerTag, "("+buildinfo.InstallerGitHash+")")
-		fmt.Println("Copyright (C) 2024 vampbites and Meowcord contributors")
+		fmt.Println("Meowlotl Cli", buildinfo.InstallerTag, "("+buildinfo.InstallerGitHash+")")
+		fmt.Println("Copyright (C) 2023 Enhancecord and contributors")
 		fmt.Println("License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.")
 		return
 	}
@@ -96,22 +91,24 @@ func main() {
 	install, uninstall, update, installOpenAsar, uninstallOpenAsar := *installFlag, *uninstallFlag, *updateFlag, *installOpenAsarFlag, *uninstallOpenAsarFlag
 	switches := []*bool{&install, &update, &uninstall, &installOpenAsar, &uninstallOpenAsar}
 	if !SliceContainsFunc(switches, func(b *bool) bool { return *b }) {
+		interactive = true
+
 		go func() {
 			<-SelfUpdateCheckDoneChan
 			if IsSelfOutdated {
 				Log.Warn("Your installer is outdated.")
-				Log.Warn("To update, select the 'Update Meowcord Installer' option to update, or run with --update-self")
+				Log.Warn("To update, select the 'Update Meowlotl' option to update, or run with --update-self")
 			}
 		}()
 
 		choices := []string{
-			"Install Meowcord",
-			"Repair Meowcord",
-			"Uninstall Meowcord",
+			"Install Enhancecord",
+			"Repair Enhancecord",
+			"Uninstall Enhancecord",
 			"Install OpenAsar",
 			"Uninstall OpenAsar",
 			"View Help Menu",
-			"Update Meowcord Installer",
+			"Update Meowlotl",
 			"Quit",
 		}
 		_, choice, err := (&promptui.Select{
@@ -126,7 +123,7 @@ func main() {
 			return
 		case "Quit":
 			return
-		case "Update Meowcord Installer":
+		case "Update Meowlotl":
 			if err := UpdateSelf(); err != nil {
 				Log.Error("Failed to update self:", err)
 				exitFailure()
@@ -144,7 +141,7 @@ func main() {
 	} else if uninstall {
 		errSilent = PromptDiscord("unpatch", *locationFlag, *branchFlag).unpatch()
 	} else if update {
-		Log.Info("Downloading latest Meowcord files...")
+		Log.Info("Downloading latest Enhancecord files...")
 		err := installLatestBuilds()
 		Log.Info("Done!")
 		if err == nil {
@@ -178,8 +175,8 @@ func main() {
 }
 
 func exit(status int) {
-	if runtime.GOOS == "windows" && IsDoubleClickRun() {
-		fmt.Print("press any key to exit")
+	if runtime.GOOS == "windows" && IsDoubleClickRun() && interactive {
+		fmt.Print("Press Enter to exit")
 		var b byte
 		_, _ = fmt.Scanf("%v", &b)
 	}
@@ -274,5 +271,5 @@ func HandleScuffedInstall() {
 	fmt.Println("Hold On!")
 	fmt.Println("You have a broken Discord Install.")
 	fmt.Println("Please reinstall Discord before proceeding!")
-	fmt.Println("Otherwise, Meowcord will likely not work.")
+	fmt.Println("Otherwise, Enhancecord will likely not work.")
 }

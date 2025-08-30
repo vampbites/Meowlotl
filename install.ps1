@@ -1,6 +1,6 @@
-$link = "https://github.com/vampbites/MeowcordInstaller/releases/latest/download/MeowcordInstallerCli.exe"
+$link = "https://github.com/vampbites/Meowlotl/releases/latest/download/MeowlotlCli.exe"
 
-$outfile = "$env:TEMP\VencordInstallerCli.exe"
+$outfile = "$env:TEMP\MeowlotlCli.exe"
 
 Write-Output "Downloading installer to $outfile"
 

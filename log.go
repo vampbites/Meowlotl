@@ -2,10 +2,9 @@ package main
 
 import (
 	"fmt"
+	"github.com/fatih/color"
 	"os"
 	"strings"
-
-	"github.com/fatih/color"
 )
 
 type Level = int

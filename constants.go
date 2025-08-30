@@ -1,20 +1,14 @@
-/*
- * SPDX-License-Identifier: GPL-3.0
- * Vencord Installer, a cross platform gui/cli app for installing Vencord
- * Copyright (c) 2023 Vendicated and Vencord contributors
- */
-
 package main
 
 import (
 	"image/color"
-	"meowcordinstaller/buildinfo"
+	"vencord/buildinfo"
 )
 
-const ReleaseUrl = "https://api.github.com/repos/vampbites/Meowcord/releases/latest"
-const InstallerReleaseUrl = "https://api.github.com/repos/vampbites/MeowcordInstaller/releases/latest"
+const ReleaseUrl = "https://api.github.com/repos/Enhancecord/Enhancecord/releases/latest"
+const InstallerReleaseUrl = "https://api.github.com/repos/Enhancecord/Meowlotl/releases/latest"
 
-var UserAgent = "meowcordinstaller/" + buildinfo.InstallerGitHash + " (https://github.com/vampbites/MeowcordInstaller)"
+var UserAgent = "Meowlotl/" + buildinfo.InstallerGitHash + " (https://github.com/vampbites/Meowlotl)"
 
 var (
 	DiscordGreen  = color.RGBA{R: 0x2D, G: 0x7C, B: 0x46, A: 0xFF}

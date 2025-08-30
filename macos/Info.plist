@@ -3,13 +3,13 @@
 <plist version="1.0">
     <dict>
         <key>CFBundleExecutable</key>
-        <string>MeowcordInstaller</string>
+        <string>Meowlotl</string>
 
         <key>CFBundleIconFile</key>
         <string>icon.icns</string>
 
         <key>CFBundleIdentifier</key>
-        <string>me.vampbites.meowcordinstaller</string>
+        <string>com.0xjwlabs.meowlotl</string>
 
         <key>NSHighResolutionCapable</key>
         <true/>

@@ -1,21 +1,15 @@
-/*
- * SPDX-License-Identifier: GPL-3.0
- * Vencord Installer, a cross platform gui/cli app for installing Vencord
- * Copyright (c) 2023 Vendicated and Vencord contributors
- */
-
 package main
 
 import (
 	"errors"
 	"fmt"
 	"io"
-	"meowcordinstaller/buildinfo"
 	"net/http"
 	"os"
 	"path"
 	"runtime"
 	"time"
+	"vencord/buildinfo"
 )
 
 var IsSelfOutdated = false
@@ -33,7 +27,7 @@ func init() {
 	go func() {
 		Log.Debug("Checking for Installer Updates...")
 
-		res, err := GetGithubRelease(InstallerReleaseUrl, InstallerReleaseUrl)
+		res, err := GetGithubRelease(InstallerReleaseUrl)
 		if err != nil {
 			Log.Warn("Failed to check for self updates:", err)
 			SelfUpdateCheckDoneChan <- false
@@ -46,15 +40,15 @@ func init() {
 }
 
 func GetInstallerDownloadLink() string {
-	const BaseUrl = "https://github.com/vampbites/MeowcordInstaller/releases/latest/download/"
+	const BaseUrl = "https://github.com/vampbites/Meowlotl/releases/latest/download/"
 	switch runtime.GOOS {
 	case "windows":
-		filename := Ternary(buildinfo.UiType == buildinfo.UiTypeCli, "MeowcordInstallerCli.exe", "MeowcordInstaller.exe")
+		filename := Ternary(buildinfo.UiType == buildinfo.UiTypeCli, "MeowlotlCli.exe", "Meowlotl.exe")
 		return BaseUrl + filename
 	case "darwin":
-		return BaseUrl + "MeowcordInstaller.MacOS.zip"
+		return BaseUrl + "Meowlotl.MacOS.zip"
 	case "linux":
-		return BaseUrl + "MeowcordInstallerCli-linux"
+		return BaseUrl + "MeowlotlCli-linux"
 	default:
 		return ""
 	}
@@ -90,7 +84,7 @@ func UpdateSelf() error {
 	}
 	defer res.Body.Close()
 
-	tmp, err := os.CreateTemp(ownExeDir, "MeowcordInstallerUpdate")
+	tmp, err := os.CreateTemp(ownExeDir, "MeowlotlUpdate")
 	if err != nil {
 		return fmt.Errorf("Failed to create tempfile: %w", err)
 	}

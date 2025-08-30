@@ -9,7 +9,7 @@
   "RT_MANIFEST": {
     "#1": {
       "0409": {
-        "description": "An Installer for the Meowcord Discord Mod",
+        "description": "An Installer for the Enhancecord Discord Mod",
         "minimum-os": "win10",
         "execution-level": "as invoker",
         "dpi-awareness": "system"
@@ -22,10 +22,10 @@
         "info": {
           "0409": {
             "Comments": "Comments",
-            "CompanyName": "Meowcord",
-            "FileDescription": "Meowcord Installer",
-            "LegalCopyright": "© 2024 vampbites and Meowcord Contributors - GPL3.0",
-            "ProductName": "Meowcord Installer",
+            "CompanyName": "Enhancecord",
+            "FileDescription": "Meowlotl",
+            "LegalCopyright": "© 2024 Enhancecord and Contributors - GPL3.0",
+            "ProductName": "Meowlotl",
             "ProductVersion": ""
           }
         }

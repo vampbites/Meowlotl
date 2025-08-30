@@ -1,11 +1,5 @@
 //go:build !cli
 
-/*
- * SPDX-License-Identifier: GPL-3.0
- * Vencord Installer, a cross platform gui/cli app for installing Vencord
- * Copyright (c) 2023 Vendicated and Vencord contributors
- */
-
 package main
 
 import (
@@ -14,7 +8,7 @@ import (
 	"errors"
 	"image"
 	"image/color"
-	"meowcordinstaller/buildinfo"
+	"vencord/buildinfo"
 
 	g "github.com/AllenDang/giu"
 	"github.com/AllenDang/imgui-go"
@@ -74,7 +68,7 @@ func main() {
 		g.Update()
 	}()
 
-	win = g.NewMasterWindow("Meowcord Installer", 1200, 800, 0)
+	win = g.NewMasterWindow("Meowlotl", 1200, 800, 0)
 
 	icon, _, err := image.Decode(bytes.NewReader(iconBytes))
 	if err != nil {
@@ -120,7 +114,7 @@ func InstallLatestBuilds() (err error) {
 
 	err = installLatestBuilds()
 	if err != nil {
-		ShowModal("Uh Oh!", "Failed to install the latest Meowcord builds from GitHub:\n"+err.Error())
+		ShowModal("Uh Oh!", "Failed to install the latest Enhancecord builds from GitHub:\n"+err.Error())
 	}
 	return
 }
@@ -269,21 +263,6 @@ func makeAutoComplete() []any {
 func makeRadioOnChange(i int) func() {
 	return func() {
 		radioIdx = i
-	}
-}
-
-func renderFilesDirErr() g.Widget {
-	return g.Layout{
-		g.Dummy(0, 50),
-		g.Style().
-			SetColor(g.StyleColorText, DiscordRed).
-			SetFontSize(30).
-			To(
-				g.Align(g.AlignCenter).To(
-					g.Label("Error: Failed to create: "+FilesDirErr.Error()),
-					g.Label("Resolve this error, then restart me!"),
-				),
-			),
 	}
 }
 
@@ -438,6 +417,17 @@ func renderInstaller() g.Widget {
 		g.Separator(),
 		g.Dummy(0, 5),
 
+		g.Style().SetFontSize(20).To(
+			renderErrorCard(
+				DiscordYellow,
+				"**Github** is the only official place to get Enhancecord. Any other site claiming to be us is malicious.\n"+
+					"If you downloaded from any other source, you should delete / uninstall everything immediately, run a malware scan and change your Discord password.",
+				90,
+			),
+		),
+
+		g.Dummy(0, 5),
+
 		g.Style().SetFontSize(30).To(
 			g.Label("Please select an install to patch"),
 		),
@@ -542,7 +532,7 @@ func renderInstaller() g.Widget {
 								}
 							}).
 							Size((w-40)/4, 50),
-						Tooltip("Reinstall & Update Meowcord"),
+						Tooltip("Reinstall & Update Enhancecord"),
 					),
 				g.Style().
 					SetColor(g.StyleColorButton, DiscordRed).
@@ -564,16 +554,16 @@ func renderInstaller() g.Widget {
 		),
 
 		InfoModal("#patched", "Successfully Patched", "If Discord is still open, fully close it first.\n"+
-			"Then, start it and verify Meowcord installed successfully by looking for its category in Discord Settings"),
+			"Then, start it and verify Enhancecord installed successfully by looking for its category in Discord Settings"),
 		InfoModal("#unpatched", "Successfully Unpatched", "If Discord is still open, fully close it first. Then start it again, it should be back to stock!"),
 		InfoModal("#scuffed-install", "Hold On!", "You have a broken Discord Install.\n"+
 			"Sometimes Discord decides to install to the wrong location for some reason!\n"+
-			"You need to fix this before patching, otherwise Meowcord will likely not work.\n\n"+
+			"You need to fix this before patching, otherwise Enhancecord will likely not work.\n\n"+
 			"Use the below button to jump there and delete any folder called Discord or Squirrel.\n"+
 			"If the folder is now empty, feel free to go back a step and delete that folder too.\n"+
 			"Then see if Discord still starts. If not, reinstall it"),
 		RawInfoModal("#openasar-confirm", "OpenAsar", "OpenAsar is an open-source alternative of Discord desktop's app.asar.\n"+
-			"Meowcord is in no way affiliated with OpenAsar.\n"+
+			"Enhancecord is in no way affiliated with OpenAsar.\n"+
 			"You're installing OpenAsar at your own risk. If you run into issues with OpenAsar,\n"+
 			"no support will be provided, join the OpenAsar Server instead!\n\n"+
 			"To install OpenAsar, press Accept and click 'Install OpenAsar' again.", true),
@@ -626,47 +616,43 @@ func loop() {
 		Layout(
 			g.Align(g.AlignCenter).To(
 				g.Style().SetFontSize(40).To(
-					g.Label("Meowcord Installer"),
+					g.Label("Meowlotl"),
 				),
 			),
 
 			g.Dummy(0, 20),
 			g.Style().SetFontSize(20).To(
 				g.Row(
-					g.Label(Ternary(IsDevInstall, "Dev Install: ", "Files will be downloaded to: ")+FilesDir),
+					g.Label(Ternary(IsDevInstall, "Dev Install: ", "Enhancecord will be downloaded to: ")+EnhancecordDirectory),
 					g.Style().
 						SetColor(g.StyleColorButton, DiscordBlue).
 						SetStyle(g.StyleVarFramePadding, 4, 4).
 						To(
 							g.Button("Open Directory").OnClick(func() {
-								g.OpenURL("file://" + FilesDir)
+								g.OpenURL("file://" + path.Dir(EnhancecordDirectory))
 							}),
 						),
 				),
 				&CondWidget{!IsDevInstall, func() g.Widget {
-					return g.Label("To customise this location, set the environment variable 'MEOWCORD_USER_DATA_DIR' and restart me").Wrapped(true)
+					return g.Label("To customise this location, set the environment variable 'ENHANCECORD_USER_DATA_DIR' and restart me").Wrapped(true)
 				}, nil},
 				g.Dummy(0, 10),
-				g.Label("Installer Version: "+buildinfo.InstallerTag+" ("+buildinfo.InstallerGitHash+")"+Ternary(IsSelfOutdated, " - OUTDATED", "")),
-				g.Label("Local Meowcord Version: "+InstalledHash),
+				g.Label("Meowlotl Version: "+buildinfo.InstallerTag+" ("+buildinfo.InstallerGitHash+")"+Ternary(IsSelfOutdated, " - OUTDATED", "")),
+				g.Label("Local Enhancecord Version: "+InstalledHash),
 				&CondWidget{
 					GithubError == nil,
 					func() g.Widget {
 						if IsDevInstall {
-							return g.Label("Not updating Meowcord due to being in DevMode")
+							return g.Label("Not updating Enhancecord due to being in DevMode")
 						}
-						return g.Label("Latest Meowcord Version: " + LatestHash)
+						return g.Label("Latest Enhancecord Version: " + LatestHash)
 					}, func() g.Widget {
 						return renderErrorCard(DiscordRed, "Failed to fetch Info from GitHub: "+GithubError.Error(), 40)
 					},
 				},
 			),
 
-			&CondWidget{
-				predicate:  FilesDirErr != nil,
-				ifWidget:   renderFilesDirErr,
-				elseWidget: renderInstaller,
-			},
+			renderInstaller(),
 		)
 
 	g.PopStyle()
