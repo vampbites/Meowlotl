@@ -61,7 +61,7 @@ func GetGithubRelease(url string) (*GithubRelease, error) {
 func InitGithubDownloader() {
 	GithubDoneChan = make(chan bool, 1)
 
-	IsDevInstall = os.Getenv("ENHANCECORD_DEV_INSTALL") == "1"
+	IsDevInstall = os.Getenv("MEOWCORD_DEV_INSTALL") == "1"
 	Log.Debug("Is Dev Install: ", IsDevInstall)
 	if IsDevInstall {
 		GithubDoneChan <- true
@@ -89,27 +89,27 @@ func InitGithubDownloader() {
 	}()
 
 	// either .asar file or directory with main.js file (in DEV)
-	EnhancecordFile := EnhancecordDirectory
+	MeowcordFile := MeowcordDirectory
 
-	stat, err := os.Stat(EnhancecordFile)
+	stat, err := os.Stat(MeowcordFile)
 	if err != nil {
 		return
 	}
 
 	// dev
 	if stat.IsDir() {
-		EnhancecordFile = path.Join(EnhancecordFile, "main.js")
+		MeowcordFile = path.Join(MeowcordFile, "main.js")
 	}
 
 	// Check hash of installed version if exists
-	b, err := os.ReadFile(EnhancecordFile)
+	b, err := os.ReadFile(MeowcordFile)
 	if err != nil {
 		return
 	}
 
-	Log.Debug("Found existing Enhancecord Install. Checking for hash...")
+	Log.Debug("Found existing Meowcord Install. Checking for hash...")
 
-	re := regexp.MustCompile(`// Enhancecord (\w+)`)
+	re := regexp.MustCompile(`// Meowcord (\w+)`)
 	match := re.FindSubmatch(b)
 	if match != nil {
 		InstalledHash = string(match[1])
@@ -154,15 +154,15 @@ func installLatestBuilds() (retErr error) {
 		retErr = err
 		return
 	}
-	out, err := os.OpenFile(EnhancecordDirectory, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
+	out, err := os.OpenFile(MeowcordDirectory, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
-		Log.Error("Failed to create", EnhancecordDirectory+":", err)
+		Log.Error("Failed to create", MeowcordDirectory+":", err)
 		retErr = err
 		return
 	}
 	read, err := io.Copy(out, res.Body)
 	if err != nil {
-		Log.Error("Failed to download to", EnhancecordDirectory+":", err)
+		Log.Error("Failed to download to", MeowcordDirectory+":", err)
 		retErr = err
 		return
 	}
@@ -175,7 +175,7 @@ func installLatestBuilds() (retErr error) {
 		return
 	}
 
-	_ = FixOwnership(EnhancecordDirectory)
+	_ = FixOwnership(MeowcordDirectory)
 
 	InstalledHash = LatestHash
 	return

@@ -5,8 +5,8 @@ import (
 	"vencord/buildinfo"
 )
 
-const ReleaseUrl = "https://api.github.com/repos/Enhancecord/Enhancecord/releases/latest"
-const InstallerReleaseUrl = "https://api.github.com/repos/Enhancecord/Meowlotl/releases/latest"
+const ReleaseUrl = "https://api.github.com/repos/Meowcord/Meowcord/releases/latest"
+const InstallerReleaseUrl = "https://api.github.com/repos/Meowcord/Meowlotl/releases/latest"
 
 var UserAgent = "Meowlotl/" + buildinfo.InstallerGitHash + " (https://github.com/vampbites/Meowlotl)"
 
