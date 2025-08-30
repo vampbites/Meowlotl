@@ -113,7 +113,7 @@ func FixOwnership(_ string) error {
 	return nil
 }
 
-// https://github.com/Vencord/Installer/issues/9
+// https://github.com/Meowcord/Installer/issues/9
 
 func CheckScuffedInstall() bool {
 	username := os.Getenv("USERNAME")

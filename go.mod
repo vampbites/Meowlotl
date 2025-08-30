@@ -1,4 +1,4 @@
-module vencord
+module meowcord
 
 go 1.20
 

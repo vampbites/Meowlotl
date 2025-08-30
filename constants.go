@@ -2,7 +2,7 @@ package main
 
 import (
 	"image/color"
-	"vencord/buildinfo"
+	"meowcord/buildinfo"
 )
 
 const ReleaseUrl = "https://api.github.com/repos/Meowcord/Meowcord/releases/latest"

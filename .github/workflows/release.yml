@@ -39,7 +39,7 @@ jobs:
         run: go get -v
 
       - name: Build Cli
-        run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -tags "static cli" -ldflags "-s -w -X 'vencord/buildinfo.InstallerGitHash=$(git rev-parse --short HEAD)' -X 'vencord/buildinfo.InstallerTag=${{ github.ref_name }}'" -o MeowlotlCli-linux
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -tags "static cli" -ldflags "-s -w -X 'meowcord/buildinfo.InstallerGitHash=$(git rev-parse --short HEAD)' -X 'meowcord/buildinfo.InstallerTag=${{ github.ref_name }}'" -o MeowlotlCli-linux
 
       - name: Update executable
         run: |
@@ -86,7 +86,7 @@ jobs:
         run: go get -v
 
       - name: Build
-        run: CGO_CFLAGS="-mmacosx-version-min=10.15" CGO_LDFLAGS="-mmacosx-version-min=10.15" CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -v -tags static -ldflags "-s -w -X 'vencord/buildinfo.InstallerGitHash=$(git rev-parse --short HEAD)' -X 'vencord/buildinfo.InstallerTag=${{ github.ref_name }}'" -o Meowlotl
+        run: CGO_CFLAGS="-mmacosx-version-min=10.15" CGO_LDFLAGS="-mmacosx-version-min=10.15" CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -v -tags static -ldflags "-s -w -X 'meowcord/buildinfo.InstallerGitHash=$(git rev-parse --short HEAD)' -X 'meowcord/buildinfo.InstallerTag=${{ github.ref_name }}'" -o Meowlotl
 
       - name: Update executable
         run: |
@@ -153,14 +153,14 @@ jobs:
           export GOROOT=/mingw64/lib/go
           export GOPATH=/mingw64
           go-winres make --product-version "git-tag"
-          CGO_ENABLED=1 GOOS=windows GOARCH=amd64 go build -v -tags static -ldflags "-s -w -H=windowsgui -extldflags=-static -X 'vencord/buildinfo.InstallerGitHash=$(git rev-parse --short HEAD)' -X 'vencord/buildinfo.InstallerTag=${{ github.ref_name }}'" -o Meowlotl.exe
+          CGO_ENABLED=1 GOOS=windows GOARCH=amd64 go build -v -tags static -ldflags "-s -w -H=windowsgui -extldflags=-static -X 'meowcord/buildinfo.InstallerGitHash=$(git rev-parse --short HEAD)' -X 'meowcord/buildinfo.InstallerTag=${{ github.ref_name }}'" -o Meowlotl.exe
 
       - name: Build i386 Cli
         shell: msys2 {0}
         run: |
           export GOROOT=/mingw64/lib/go
           export GOPATH=/mingw64
-          CGO_ENABLED=0 GOOS=windows GOARCH=386 go build -v -tags "static cli" -ldflags "-s -w -extldflags=-static -X 'vencord/buildinfo.InstallerGitHash=$(git rev-parse --short HEAD)' -X 'vencord/buildinfo.InstallerTag=${{ github.ref_name }}'" -o MeowlotlCli.exe
+          CGO_ENABLED=0 GOOS=windows GOARCH=386 go build -v -tags "static cli" -ldflags "-s -w -extldflags=-static -X 'meowcord/buildinfo.InstallerGitHash=$(git rev-parse --short HEAD)' -X 'meowcord/buildinfo.InstallerTag=${{ github.ref_name }}'" -o MeowlotlCli.exe
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3

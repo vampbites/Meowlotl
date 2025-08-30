@@ -4,12 +4,12 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"meowcord/buildinfo"
 	"net/http"
 	"os"
 	"path"
 	"runtime"
 	"time"
-	"vencord/buildinfo"
 )
 
 var IsSelfOutdated = false

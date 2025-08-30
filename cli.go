@@ -6,10 +6,10 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"meowcord/buildinfo"
 	"os"
 	"runtime"
 	"strings"
-	"vencord/buildinfo"
 
 	"github.com/fatih/color"
 	"github.com/manifoldco/promptui"

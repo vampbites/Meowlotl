@@ -8,7 +8,7 @@ import (
 	"errors"
 	"image"
 	"image/color"
-	"vencord/buildinfo"
+	"meowcord/buildinfo"
 
 	g "github.com/AllenDang/giu"
 	"github.com/AllenDang/imgui-go"
